@@ -5,9 +5,8 @@ function NavBar({ setNav }) {
     <nav>
       <h1>Inicia sesión o ¡Regístrate!</h1>
       <ul>
-        <li><Link to="/login">Inicia sesión</Link></li>
-        <li><Link to="/register">Registro</Link></li>
-        <li><Link to="/food">Nuestras recetas</Link></li>
+        <button><Link to="/login">Inicia sesión</Link></button>
+        <button><Link to="/register">Registro</Link></button>
       </ul>
     </nav>
   );

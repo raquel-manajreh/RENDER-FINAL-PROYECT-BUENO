@@ -7,7 +7,6 @@ import { Navigate, Route, Routes } from "react-router-dom";
 import Login from "./Login/Login";
 import NavBar from "./NavBar/NavBar";
 import AuthRoute from "./AuthRoute/AuthRoute";
-import getUsersApi from "../services/usersApi";
 import Register from "./Register/Register";
 // import FilterByIngredients from "./Filters/FilterByIngredients";
 
@@ -31,12 +30,7 @@ function App() {
     });
   }, []);
 
-  useEffect(()=>{
-    getUsersApi().then((usersInfo) => {
-      setUser(usersInfo);
-    })
-  }, [])
-
+  
   // Función para obtener los sabores únicos
   const getTaste = () => {
     const uniqueTastes = [...new Set(food.map(recipe => recipe.taste))];
@@ -82,10 +76,10 @@ function App() {
       <NavBar setNav={setNav}/>
 
       <Routes>
-        <Route path="/" element={<h2></h2>}/>
-        <Route path="/login" element={<Login  setUser={setUser}/>}/>
-        <Route path="/register" element={
-          <AuthRoute user={user} component={<Register />}/>}/>
+        <Route path="/login" element={<Login setUser={setUser} />} />
+        <Route path="/register" element={<Register />} />
+        <Route path="/food" element={<FoodList />} />
+      
 
         <Route path="/food" element={
           <AuthRoute user={user} component={

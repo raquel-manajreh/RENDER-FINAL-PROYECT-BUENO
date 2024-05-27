@@ -6,6 +6,7 @@ const getUsersApi = () => {
             return{
                 name: item.name,
                 email: item.email,
+                username: item.username,
                 id: item.id
             };
         });
