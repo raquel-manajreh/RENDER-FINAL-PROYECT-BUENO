@@ -10,7 +10,6 @@ import AuthRoute from "./AuthRoute/AuthRoute";
 import Register from "./Register/Register";
 // import FilterByIngredients from "./Filters/FilterByIngredients";
 
-
 function App() {
 
   const [user, setUser] = useState(null);
@@ -36,6 +35,7 @@ function App() {
     const uniqueTastes = [...new Set(food.map(recipe => recipe.taste))];
     return uniqueTastes;
   };
+
   // Filtrar la comida según el sabor seleccionado
   const filterFood = food.filter((recipe) => {
     if (taste === 'all') {
@@ -47,22 +47,36 @@ function App() {
 
   // Función para obtener los tipos de comida únicos
   const getType = () => {
-    const allTypeStrings = food.map((recipe) => JSON.stringify(recipe.type));
+    // Filtra recetas que tengan un tipo definido
+    const allTypeStrings = food
+      .filter(recipe => recipe.type) // Filtra recetas sin tipo definido
+      .map((recipe) => JSON.stringify(recipe.type));
+
     const uniqueTypeStrings = [...new Set(allTypeStrings)];
-    const uniqueTypes = uniqueTypeStrings.map((typeString) => JSON.parse(typeString));
+
+    // Intenta parsear solo si el tipo es válido
+    const uniqueTypes = uniqueTypeStrings.map((typeString) => {
+      try {
+        return JSON.parse(typeString);
+      } catch (error) {
+        console.error("Error al parsear tipo de receta:", error);
+        return null; // Devuelve null o un valor por defecto si falla el parseo
+      }
+    }).filter(type => type !== null); // Filtra cualquier valor que no se haya podido parsear
+
     return uniqueTypes;
   };
+
   // Filtrar la comida según el tipo seleccionado
   const filterTypes = food.filter((recipe) => {
     if (type === 'all') {
       return true;
     } else {
-      return recipe.type === type;
+      return recipe.type && JSON.stringify(recipe.type) === JSON.stringify(type);
     }
   });
 
   // const filterByIngredients = () => {
-    
   //   console.log('Nuestras recetas filtradas', ingredients);
   // };
 
@@ -80,17 +94,16 @@ function App() {
         <Route path="/register" element={<Register />} />
         <Route path="/food" element={<FoodList />} />
       
-
         <Route path="/food" element={
           <AuthRoute user={user} component={
             <>
               <FilterByTaste allTaste={getTaste()} setTaste={setTaste} />
               <FilterByType allType={getType()} setType={setType} />
-                {/* <FilterByIngredients ingredients={setIngredients}/> */}
+              {/* <FilterByIngredients ingredients={setIngredients}/> */}
               <FoodList food={filterFood} />
             </>
           } />
-          } />
+        } />
          
         <Route path="*" element={user ? <Navigate to="/food" /> : <Navigate to="/login" />} />
 

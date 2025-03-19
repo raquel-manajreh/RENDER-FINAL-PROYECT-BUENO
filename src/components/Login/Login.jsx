@@ -107,7 +107,7 @@ function Login({ setUser }) {
             Username:
             <input
               type="text"
-              value={username}
+              value={name}
               onChange={(e) => setUsername(e.target.value)}
             />
           </label>

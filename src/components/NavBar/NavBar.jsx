@@ -13,5 +13,3 @@ function NavBar({ setNav }) {
 }
 
 export default NavBar;
-
-
